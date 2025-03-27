@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <form class="row g-2">
+            <div class="col-auto">
+                <input type="month" 
+                       class="form-control" 
+                       name="month" 
+                       value="{{ current_month }}"
+                       onchange="this.form.submit()">
+            </div>
+            <div class="col-auto">
+                <a href="/" class="btn btn-secondary">Clear</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">Recent Expenses</h4>
+                    <a href="/add" class="btn btn-primary">+ Add Expense</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.date }}</td>
+                                <td>
+                                    <span class="badge bg-primary">{{ expense.category }}</span>
+                                </td>
+                                <td>{{ expense.description }}</td>
+                                <td class="text-danger fw-bold">₹{{ "%.2f"|format(expense.amount) }}</td>
+                                <td>
+                                    <a href="{{ url_for('edit_expense', id=expense.id) }}" 
+                                       class="btn btn-sm btn-outline-primary">Edit</a>
+                                    <a href="{{ url_for('delete_expense', id=expense.id) }}" 
+                                       class="btn btn-sm btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">No expenses found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Expenses</h5>
+                <h2 class="text-danger">₹{{ "%.2f"|format(total) }}</h2>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="mb-4">Spending Breakdown</h5>
+                <canvas id="chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: {{ categories|safe }},
+            datasets: [{
+                data: {{ amounts|safe }},
+                backgroundColor: [
+                    '#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#4bc0c0',
+                    '#9966ff', '#ff9f40', '#ffcd56', '#4d5360', '#c45850'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

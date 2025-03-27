@@ -1,0 +1,11 @@
+body {
+  min-height: 100vh;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.shadow {
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}

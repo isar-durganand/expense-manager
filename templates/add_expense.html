@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Add New Expense</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Amount</label>
+                        <input type="number" class="form-control" name="amount" step="0.01" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" name="category" required>
+                            <option value="Food">Food</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-control" name="date">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                    <a href="/" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
